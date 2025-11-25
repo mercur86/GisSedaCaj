@@ -1,5 +1,5 @@
 # Imagen base oficial de Node 10
-FROM node:10
+FROM node:18
 
 # Crear directorio de trabajo
 WORKDIR /usr/src/app
