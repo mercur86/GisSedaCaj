@@ -1,0 +1,29 @@
+{
+  "name": "gistecov2.0-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index",
+    "start": "node src/index mode=production"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-graphql": "^0.7.1",
+    "express-session": "^1.15.6",
+    "graphql": "^14.2.1",
+    "graphql-type-json": "^0.3.2",
+    "graphql-upload": "^8.0.7",
+    "node-fetch": "^2.6.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "pg-promise": "^9.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}

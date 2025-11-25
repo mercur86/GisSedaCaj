@@ -1,0 +1,5 @@
+/node_modules
+/public
+/uploads
+/src/ssl
+package-lock.json
