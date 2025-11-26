@@ -184,27 +184,21 @@ const Sistema = new GraphQLObjectType({
             type: ResultadoImportacionType,
             args: {
                 capaId: { type: new GraphQLNonNull(GraphQLInt) },
-                data: { type: new GraphQLNonNull(new GraphQLList(GraphQLJSON)) } // <--- acepta JSON
+                data: { type: new GraphQLNonNull(new GraphQLList(GraphQLJSON)) } ,
+                srid: { type: new GraphQLNonNull(GraphQLInt) }
             },
             resolve: async (_, args, req) => {
                 try {
-                    // Guardar JSON en PostgreSQL desde GraphQL
-                    // const query = `
-                    //     select * from gis.fn_importar_capa($1, $2::jsonb)`;
-
-                    // const result = await db.one(query, [
-                    //     args.capaId,
-                    //     JSON.stringify(args.data) // IMPORTANTE
-                    // ]);
-
-                    // return {
-                    //     ok: result.fn_importar_capa.ok,
-                    //     mensaje: result.fn_importar_capa.mensaje
-                    // };
-
+                 const query = `SELECT * FROM gis.fn_importar_capa($1, $2::jsonb,$3) `;
+                    
+                    const result = await db.one(query, [
+                        args.capaId,
+                        JSON.stringify( args.data),
+                        args.srid
+                    ]);
                     return {
-                        ok:true,
-                        mensaje: "importacion correcta"
+                        ok: result.ok,
+                        mensaje: result.mensaje
                     };
 
                 } catch (error) {
@@ -215,6 +209,7 @@ const Sistema = new GraphQLObjectType({
                 }
             }
         }
+
 
     }
 });

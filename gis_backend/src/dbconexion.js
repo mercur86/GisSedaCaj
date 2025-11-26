@@ -1,7 +1,7 @@
 const pgp = require('pg-promise')();
 
 const dbConfig = {
-    host: '44.193.209.119',
+    host: '52.204.52.33',
     port: 5436,
     database: 'geocatastro_20251114',
     user: 'postgres',

@@ -33,14 +33,11 @@ const ImportarArchivo = ({ capa, storeContext: { map } }) => {
 
     const [cargando, setCargando] = useState(false);
     const [mensaje, setMensaje] = useState(mensajeInicial);
-
+    const [srid, setSrid] = useState("4326");
     useEffect(() => {
         setCapaSeleccionada(capa);
     }, [capa]);
 
-    // ---------------------------
-    // CAPA
-    // ---------------------------
 
     function handleCapaSelect(e) {
         const capaSel = map.getCapaById(e.value.id);
@@ -58,6 +55,14 @@ const ImportarArchivo = ({ capa, storeContext: { map } }) => {
     function handleArchivoChange(e) {
         const file = e.target.files[0];
         if (!file) return;
+        const maxSize = 2 * 1024 * 1024; // 5 MB en bytes
+        if (file.size > maxSize) {
+            setMensaje({
+                texto: 'El archivo supera el límite de 2 MB.',
+                tipo: TIPO_ALERTA.ADVERTENCIA
+            });
+            return; 
+        }
 
         setArchivo(file);
 
@@ -67,25 +72,30 @@ const ImportarArchivo = ({ capa, storeContext: { map } }) => {
         });
     }
 
+
     // ---------------------------
     // CONVERTIR CSV → JSON
     // ---------------------------
 
     function csvToJson(csvText) {
         const lineas = csvText.split("\n").filter(l => l.trim() !== "");
-        const headers = lineas[0].split(",").map(h => h.trim());
+        // Limpia comillas de los headers
+        const headers = lineas[0]
+            .split(",")
+            .map(h => h.trim().replace(/^"|"$/g, ''));
 
         const data = lineas.slice(1).map(line => {
-            const values = line.split(",").map(v => v.trim());
+            const values = line.split(",").map(v => v.trim().replace(/^"|"$/g, ''));
             const obj = {};
             headers.forEach((h, i) => {
-                obj[h] = values[i] ?? null;
+                obj[h] = values[i] === "" ? null : values[i];
             });
             return obj;
         });
 
         return data;
     }
+
 
     // ---------------------------
     // SUBMIT IMPORTAR (Mutation)
@@ -111,13 +121,11 @@ const ImportarArchivo = ({ capa, storeContext: { map } }) => {
 
             const text = await archivo.text();
             const jsonData = csvToJson(text);
-
-            console.log("JSON a enviar:", jsonData);
-
             await importarCapa({
                 variables: {
                     capaId: parseInt(capaSeleccionada.get("id")),
-                    data: jsonData
+                    data: jsonData,
+                    srid: parseInt(srid)
                 }
             });
 
@@ -136,11 +144,19 @@ const ImportarArchivo = ({ capa, storeContext: { map } }) => {
             <Mutation
                 mutation={IMPORTAR_CAPA}
                 onCompleted={(resp) => {
-                    console.log(resp)
-                    setMensaje({
-                        texto:resp.sistema.importarCapa.mensaje,
-                        tipo: TIPO_ALERTA.EXITO
-                    });
+
+                    if (resp.sistema.importarCapa.ok) {
+                        setMensaje({
+                            texto: resp.sistema.importarCapa.mensaje,
+                            tipo: TIPO_ALERTA.EXITO
+                        });
+                    } else {
+                        setMensaje({
+                            texto: resp.sistema.importarCapa.mensaje,
+                            tipo: TIPO_ALERTA.ADVERTENCIA
+                        });
+                    }
+
                 }}
                 onError={(err) => {
                     setMensaje({ texto: err.message, tipo: TIPO_ALERTA.ERROR });
@@ -148,6 +164,18 @@ const ImportarArchivo = ({ capa, storeContext: { map } }) => {
             >
                 {(importarCapa, { loading }) => (
                     <form onSubmit={(e) => handleSubmitImportar(e, importarCapa)}>
+                        <div className="mb-2">
+                            <label htmlFor="sridSelect">Tipo de coordenadas</label>
+                            <select
+                                id="sridSelect"
+                                className="form-control"
+                                value={srid}
+                                onChange={(e) => setSrid(e.target.value)}
+                            >
+                                <option value="4326">EPSG:4326 (Lat/Lon)</option>
+                                <option value="32717">EPSG:32717 (UTM Zona 17S)</option>
+                            </select>
+                        </div>
 
                         <AutoCompleteCapas
                             value={capaInputText}
