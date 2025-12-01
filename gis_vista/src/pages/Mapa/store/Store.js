@@ -30,7 +30,8 @@ import {
 import { createMap } from './map/config';
 
 const AppStore = createContext(null);
-const latLong = [-80.637816, -5.188603];
+//const latLong = [-80.637816, -5.188603];
+const latLong = [-78.514609, -7.156441];
 
 const createApis = (dispatch) => {
     return {

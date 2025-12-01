@@ -2,7 +2,7 @@ const session = require('express-session');
 
 const createSession = (timeOfLife) => {
     const config = {
-        secret: 'gisteco',
+        secret: 'sedacaj',
         rolling: true,
         resave: false,
         saveUninitialized: false,
