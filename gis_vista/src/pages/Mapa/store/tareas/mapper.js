@@ -28,6 +28,7 @@ export const BUSCAR_CALLE = 'BUSCAR_CALLE',
     FORMULARIO_ELIMINAR_USUARIO_FACTIBLE_POTENCIAL = 'ELIMINAR_USUARIO_FACTIBLE_POTENCIAL',
     AGREGAR_MARCADOR = 'AGREGAR_MARCADOR',
     LOCALIZAR_COORDENADAS = 'LOCALIZAR_COORDENADAS',
+    INSERTAR_COORDENADAS = 'INSERTAR_COORDENADAS',
     CONVERTIR_COORDENADAS = 'CONVERTIR_COORDENADAS',
     EXPORTAR_CAPA = 'EXPORTAR_CAPA',
     IMPORTAR_CAPA = 'IMPORTAR_CAPA',
@@ -141,6 +142,9 @@ const tarea = {
     },
     [LOCALIZAR_COORDENADAS]: {
         componente: lazy(() => import(`../../../../modules/catastro/components/LocalizarCoordenadas`))
+    },
+    [INSERTAR_COORDENADAS]: {
+        componente: lazy(() => import(`../../../../modules/catastro/components/InsertarCoordenadas`))
     },
     [CONVERTIR_COORDENADAS]: {
         componente: lazy(() => import(`../../../../modules/catastro/components/ConvertirCoordenadas`))
