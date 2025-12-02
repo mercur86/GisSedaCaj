@@ -49,7 +49,7 @@ const setServerUrl = () => {
     const [, mode] = process.argv.map((arg) => arg.split("="))
         .find(([name]) => name === 'mode') || [null, 'development'];
 
-    const serverUrl = mode === 'production' ? 'http://gisteco.epsgrau.pe:3030' : 'http://localhost:3030';
+    const serverUrl = mode === 'production' ? 'http://35.174.51.181:3030' : 'http://localhost:3030';
 
     console.log('Creando archivo de configuración...')
     fs.writeFile(path.resolve(__dirname, '../config.js'), `

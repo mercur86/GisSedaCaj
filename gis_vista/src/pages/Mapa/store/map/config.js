@@ -9,7 +9,6 @@ import { register } from 'ol/proj/proj4';
 
 const createGeoserverLayers = (capas) => {
     let ly;
-    //const url = 'http://gisteco.epsgrau.pe:8080/geoserver/wms';
     const url = 'http://35.174.51.181:8086/geoserver/et_sedacaj/wms';
 
     return capas.map((capa) => {
