@@ -5,7 +5,7 @@ const express = require('express'),
 
 const router = express.Router();
 
-configCORS(router, 'http://181.65.142.123:8080');
+configCORS(router, '*');
 router.use(bodyParser.urlencoded({ extended: false }));
 router.put("/mantenimiento/:tipo_elemento/:gid_elemento", (req, res) => {
     const query = "select * from gis.rest_new_maintenance_action($1,$2,$3)";

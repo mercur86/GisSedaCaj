@@ -1,4 +1,4 @@
-const configCORS = (router, allowedOrigin) => {
+const configCORS = (router, allowedOrigin = '*') => {
     router.use((req, res, next) => {
         res.set({
             "Access-Control-Allow-Origin": allowedOrigin,
