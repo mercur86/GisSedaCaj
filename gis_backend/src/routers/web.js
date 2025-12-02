@@ -12,7 +12,7 @@ const [, mode] = process.argv.map((arg) => arg.split("="))
     .find(([name]) => name === 'mode') || [null, 'development'];
 
 //const clientUrl = mode === 'production' ? 'http://gisteco.epsgrau.pe:7777' : 'http://gisteco.epsgrau.pe:7777';
- const clientUrl = mode === 'production' ? 'http://localhost:7777' : 'http://localhost:7777';
+ const clientUrl = mode === 'production' ? 'http://35.174.51.181:7777' : 'http://localhost:7777';
 
 /* fin de la determinación del cliente */
 
